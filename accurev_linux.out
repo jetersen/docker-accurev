@@ -1,0 +1,35 @@
+# Fri Feb 24 20:34:55 CET 2017
+# Replay feature output
+# ---------------------
+# This file was built by the Replay feature of InstallAnywhere.
+# It contains variables that were set by Panels, Consoles or Custom Code.
+
+
+
+#Choose Install Folder
+#---------------------
+USER_INSTALL_DIR=/var/accurev
+
+#Configure: Set Host and Port
+#----------------------------
+HOST_NAME_INPUT=accurevbox.josephp.tech
+HOST_PORT_INPUT=5050
+
+#Adjust System PATH Variable
+#---------------------------
+ADD_TO_PATH_INPUT_RESULTS=\"\",\"No\"
+ADD_TO_PATH_INPUT_RESULTS_1=
+ADD_TO_PATH_INPUT_RESULTS_2=No
+ADD_TO_PATH_INPUT_RESULTS_BOOLEAN_1=0
+ADD_TO_PATH_INPUT_RESULTS_BOOLEAN_2=1
+
+#Install
+#-------
+
+#Start AccuRev User Interface
+#----------------------------
+START_UI_INPUT_RESULTS=\"\",\"No\"
+START_UI_INPUT_RESULTS_1=
+START_UI_INPUT_RESULTS_2=No
+START_UI_INPUT_RESULTS_BOOLEAN_1=0
+START_UI_INPUT_RESULTS_BOOLEAN_2=1
