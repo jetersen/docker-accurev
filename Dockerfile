@@ -1,11 +1,12 @@
 FROM ubuntu:bionic
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y curl unzip && \
-    rm -rf /var/lib/apt/lists/*
+  apt-get install -y curl unzip && \
+  rm -rf /var/lib/apt/lists/*
 
 ENV ACCUREV_HOME /var/accurev
-ENV ACCUREV_VERSION=7.3
+ARG ACCUREV_VERSION=7.3
+ENV ACCUREV_VERSION=${ACCUREV_VERSION}
 ENV POSTGRES_PASSWORD=PASSWORD
 ENV PATH $PATH:${ACCUREV_HOME}/bin
 
@@ -14,21 +15,17 @@ ARG group=accurev
 ARG uid=1000
 ARG gid=1000
 
-RUN groupadd -g ${gid} ${group} \
-    && useradd -d "$ACCUREV_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
-
-RUN chmod -R 760 ${ACCUREV_HOME}
-
-RUN curl -O -fsSL http://cdn.microfocus.com/cached/legacymf/Products/accurev/accurev${ACCUREV_VERSION}/accurev-${ACCUREV_VERSION}-linux-x86-x64.bin && \
-  mv /accurev-${ACCUREV_VERSION}-linux-x86-x64.bin ${ACCUREV_HOME}/accurev.bin
-
-RUN chown -R ${user}:${group} "$ACCUREV_HOME"
+RUN groupadd -g ${gid} ${group} && \
+  useradd -d "$ACCUREV_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user} && \
+  chmod -R 760 ${ACCUREV_HOME} && \
+  chown -R ${user}:${group} "$ACCUREV_HOME"
 
 USER ${user}
 WORKDIR ${ACCUREV_HOME}
 
 RUN mkdir -p ${ACCUREV_HOME}/license && \
   touch ${ACCUREV_HOME}/license/aclicense.txt && \
+  curl -fsSL http://cdn.microfocus.com/cached/legacymf/Products/accurev/accurev${ACCUREV_VERSION}/accurev-${ACCUREV_VERSION}-linux-x86-x64.bin -o ./accurev.bin && \
   chmod +x ./accurev.bin && \
   printf "\nY\n${ACCUREV_HOME}\nY\n\n\n\n${ACCUREV_HOME}/database\n\n\n${POSTGRES_PASSWORD}\n${POSTGRES_PASSWORD}\n\n${ACCUREV_HOME}/license/aclicense.txt\n\n\n2\n\n\n\n\n\n" | ./accurev.bin && \
   rm -rf ./accurev.bin ${ACCUREV_HOME}/license/aclicense.txt ./installer-debug-*.txt AccuRev_Install*.log ./.InstallAnywhere/ ./doc/ ./examples/ ./AccuRev\ Manuals/
